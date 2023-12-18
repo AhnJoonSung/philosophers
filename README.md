@@ -30,11 +30,11 @@ ___
 
 프로그램의 로그에 대해서:
 - 철학자의 상태 변경은 다음과 같이 형식화되어야 합니다:
-  - timestamp_in_ms X가 포크를 잡음
-  - timestamp_in_ms X가 먹는 중
-  - timestamp_in_ms X가 잠자는 중
-  - timestamp_in_ms X가 생각하는 중
-  - timestamp_in_ms X가 죽음
+  - timestamp_in_ms X has taken a fork
+  - timestamp_in_ms X is eating
+  - timestamp_in_ms X is sleeping
+  - timestamp_in_ms X is thinking
+  - timestamp_in_ms X died
   밀리초 단위의 현재 타임스탬프로 timestamp_in_ms를 대체하고, X는 철학자 번호로 대체하세요.
 - 표시된 상태 메시지는 다른 메시지와 섞이지 않아야 합니다.
 - 철학자의 죽음을 알리는 메시지는 철학자가 실제로 죽은 후 10밀리초 이내에 표시되어야 합니다.
@@ -45,11 +45,16 @@ ___
 ## Mandatory
 
 프로그램 이름: philo
+
 제출 파일: Makefile, *.h, *.c, philo/ 디렉토리 안에
+
 Makefile: NAME, all, clean, fclean, re
 인자: 철학자의 수, 죽는 시간, 먹는 시간, 잠자는 시간, [각 철학자가 먹어야 하는 횟수]
+
 외부 함수: memset, printf, malloc, free, write, usleep, gettimeofday, pthread_create, pthread_detach, pthread_join, pthread_mutex_init, pthread_mutex_destroy, pthread_mutex_lock, pthread_mutex_unlock
+
 Libft 허용 여부: 아니오
+
 설명: 스레드와 뮤텍스를 사용하는 철학자들
 
 필수 부분에 대한 특정 규칙은 다음과 같습니다:
@@ -63,11 +68,17 @@ Libft 허용 여부: 아니오
 ## Bonus
 
 프로그램 이름: philo_bonus
+
 제출 파일: Makefile, *.h, *.c, philo_bonus/ 디렉토리 안에
+
 Makefile: NAME, all, clean, fclean, re
+
 인자: 철학자의 수, 죽는 시간, 먹는 시간, 잠자는 시간, [각 철학자가 먹어야 하는 횟수]
+
 외부 함수: memset, printf, malloc, free, write, fork, kill, exit, pthread_create, pthread_detach, pthread_join, usleep, gettimeofday, waitpid, sem_open, sem_close, sem_post, sem_wait, sem_unlink
+
 Libft 허용 여부: 아니오
+
 설명: 프로세스와 세마포어를 사용하는 철학자들
 
 보너스 부분의 프로그램은 필수 프로그램과 동일한 인자를 받습니다. 전체 규칙 챕터의 요구 사항을 준수해야 합니다.
