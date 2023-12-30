@@ -1,16 +1,16 @@
 CC = cc
 LFLAGS = -fsanitize=address -g3
-# CFLAGS = -Wall -Wextra -Werror -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -MMD -MP
 INCLUDE = .
 OBJ_DIR = obj
 
 SRC = \
-ft_strtol.c logger.c \
+forks.c \
+logger.c \
 main.c \
-monitor.c \
+death_monitor.c full_monitor.c\
 mutex.c \
 philo.c \
-set_forks.c \
 simulator.c \
 t_data.c t_philo.c \
 timer.c \

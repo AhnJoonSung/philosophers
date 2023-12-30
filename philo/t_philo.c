@@ -6,11 +6,13 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/22 17:43:06 by jooahn           ###   ########.fr       */
+/*   Updated: 2023/12/31 04:18:50 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	del_philo(t_philo *philo);
 
 t_philo	*new_philo(void)
 {
@@ -21,8 +23,6 @@ t_philo	*new_philo(void)
 		return (0);
 	philo->last_eat_mutex = new_mutex();
 	philo->remain_mutex = new_mutex();
-	pthread_mutex_init(philo->last_eat_mutex, 0);
-	pthread_mutex_init(philo->remain_mutex, 0);
 	return (philo);
 }
 
@@ -39,7 +39,10 @@ t_philo	**set_philos(t_data *data, pthread_mutex_t *forks)
 	{
 		philos[i] = new_philo();
 		if (!philos[i])
-			return (0); // TO DO : 다 프리하고 리턴
+		{
+			clear_philos(philos, i - 1);
+			return (0);
+		}
 		philos[i]->x = i;
 		philos[i]->left_fork = forks + i;
 		philos[i]->right_fork = forks + ((i + 1) % data->num_of_philo);
@@ -49,4 +52,25 @@ t_philo	**set_philos(t_data *data, pthread_mutex_t *forks)
 		i++;
 	}
 	return (philos);
+}
+
+void	clear_philos(t_philo **philos, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (philos[i])
+			del_philo(philos[i]);
+		i++;
+	}
+	free(philos);
+}
+
+static void	del_philo(t_philo *philo)
+{
+	del_mutex(philo->last_eat_mutex);
+	del_mutex(philo->remain_mutex);
+	free(philo);
 }

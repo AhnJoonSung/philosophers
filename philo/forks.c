@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   monitor.c                                     :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/19 16:21:51 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/19 22:22:43 by jooahn           ###   ########.fr       */
+/*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
+/*   Updated: 2023/12/31 04:23:21 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*death_monitor(void *arg)
+// success -> return (0);
+pthread_mutex_t	*set_forks(int cnt)
 {
-	t_philo	**philo;
+	pthread_mutex_t	*forks;
+
+	forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * cnt);
+	if (!forks)
+		return (0);
+	while (cnt-- > 0)
+	{
+		if (pthread_mutex_init(forks + cnt, 0) != 0)
+			return (0);
+	}
+	return (forks);
 }
 
-void	*full_monitor(void *arg)
+void	clear_forks(pthread_mutex_t *forks, int cnt)
 {
-	t_philo	**philo;
+	while (cnt-- > 0)
+		pthread_mutex_destroy(forks + cnt);
+	free(forks);
 }
-

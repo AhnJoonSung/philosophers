@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 17:58:48 by ahn               #+#    #+#             */
-/*   Updated: 2023/12/19 16:12:13 by jooahn           ###   ########.fr       */
+/*   Updated: 2023/12/31 04:18:11 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ t_data	*new_data(void)
 	data->is_end = 0;
 	data->end_mutex = new_mutex();
 	data->log_mutex = new_mutex();
-	pthread_mutex_init(data->end_mutex, 0);
-	pthread_mutex_init(data->log_mutex, 0);
 	return (data);
+}
+
+void	del_data(t_data *data)
+{
+	del_mutex(data->end_mutex);
+	del_mutex(data->log_mutex);
+	free(data);
 }
