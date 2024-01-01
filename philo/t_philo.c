@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_philo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 04:18:50 by jooahn           ###   ########.fr       */
+/*   Updated: 2023/12/31 18:39:36 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_philo	*new_philo(void)
 	return (philo);
 }
 
-t_philo	**set_philos(t_data *data, pthread_mutex_t *forks)
+t_philo	**set_philos(t_data *data, t_fork *forks)
 {
 	t_philo	**philos;
 	int		i;

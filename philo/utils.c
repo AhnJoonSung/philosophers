@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 22:39:41 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 06:00:35 by jooahn           ###   ########.fr       */
+/*   Updated: 2023/12/31 19:45:17 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,10 @@ static int	ft_isspace(int c);
 static int	ft_isdigit(int c);
 static long	get_num(const char *str, int neg);
 
-int	create_detach_thread(pthread_t *thread, void *(*f)(void *), void *arg)
+void	create_detach_thread(pthread_t *thread, void *(*f)(void *), void *arg)
 {
-	if (pthread_create(thread, 0, f, arg) != 0)
-		return (1);
-	if (pthread_detach(*thread) != 0)
-		return (1);
-	return (0);
+	pthread_create(thread, 0, f, arg);
+	pthread_detach(*thread);
 }
 
 long	ft_strtol(const char *str)
