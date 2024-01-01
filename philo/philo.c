@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 06:29:01 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/01 21:54:35 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ static int	taken(t_philo *philo, t_data *data)
 {
 	if (philo->x % 2 == 0)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		pthread_mutex_lock(philo->right_fork);
+		take_fork(philo->right_fork);
+		take_fork(philo->left_fork);
 	}
 	else
 	{
-		pthread_mutex_lock(philo->right_fork);
-		pthread_mutex_lock(philo->left_fork);
+		take_fork(philo->left_fork);
+		take_fork(philo->right_fork);
 	}
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
+		release_fork(philo->right_fork);
+		release_fork(philo->left_fork);
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
@@ -101,8 +101,8 @@ static int	eating(t_philo *philo, t_data *data)
 	pthread_mutex_unlock(philo->remain_mutex);
 	pthread_mutex_unlock(data->end_mutex);
 	usleep(data->time_to_eat * 1000);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	release_fork(philo->right_fork);
+	release_fork(philo->left_fork);
 	return (0);
 }
 

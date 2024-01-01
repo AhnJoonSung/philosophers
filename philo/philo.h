@@ -23,7 +23,6 @@
 # define FT_WAITTIME 500000
 
 typedef struct timeval	t_timeval;
-typedef pthread_mutex_t	t_fork;
 
 enum					e_status
 {
@@ -34,9 +33,15 @@ enum					e_status
 	DIED
 };
 
+typedef struct fork
+{
+	int				is_taken;
+	pthread_mutex_t	fork_mutex;
+}			t_fork;
+
 typedef struct data
 {
-	long				num_of_philo;
+	int					num_of_philo;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
@@ -49,7 +54,7 @@ typedef struct data
 
 typedef struct philo
 {
-	long				x;
+	int					x;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
 	long				last_eat;
@@ -66,11 +71,15 @@ void					del_data(t_data *data);
 t_philo					*new_philo(void);
 
 long					get_time(t_timeval start_tv);
+long					get_utime(t_timeval start_tv);
+void					busy_waiting(useconds_t usec);
 long					ft_strtol(const char *str);
 
-pthread_mutex_t			*set_forks(int cnt);
-void					clear_forks(pthread_mutex_t *forks, int cnt);
-t_philo					**set_philos(t_data *data, pthread_mutex_t *forks);
+t_fork					*set_forks(int cnt);
+void					take_fork(t_fork *fork);
+void					release_fork(t_fork *fork);
+void					clear_forks(t_fork *forks, int cnt);
+t_philo					**set_philos(t_data *data, t_fork *forks);
 void					clear_philos(t_philo **philos, int size);
 
 void					create_detach_thread(pthread_t *thread,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 20:18:27 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/01 19:59:26 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	simulator(t_data *data)
 	if (set_simulator(data, &forks, &philos) != 0)
 		return (clear_simulator(data, forks, philos, 1));
 	if (create_threads(data, philos) != 0)
-		return (clear_simulator(data, forks, philos, 2));
+		return (clear_simulator(data, forks, philos, 0));
 	while (1)
 	{
-			pthread_mutex_lock(data->end_mutex);
-			if (data->is_end)
-				break ;
-			pthread_mutex_unlock(data->end_mutex);
+		pthread_mutex_lock(data->end_mutex);
+		if (data->is_end)
+			break ;
+		pthread_mutex_unlock(data->end_mutex);
 	}
 	pthread_mutex_unlock(data->end_mutex);
 	usleep(FT_WAITTIME);
@@ -73,18 +73,12 @@ static int	create_threads(t_data *data, t_philo **philos)
 void	clear_simulator(t_data *data, t_fork *forks, t_philo **philos,
 		int status)
 {
-	if (status == 1)
-		del_data(data);
-	if (status == 2)
-	{
-		clear_forks(forks, data->num_of_philo);
-		clear_philos(philos, data->num_of_philo);
-		del_data(data);
-	}
 	if (status == 0)
 	{
 		clear_forks(forks, data->num_of_philo);
 		clear_philos(philos, data->num_of_philo);
 		del_data(data);
 	}
+	else if (status == 1)
+		del_data(data);
 }

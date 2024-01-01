@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:13:37 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 20:16:38 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/01 20:36:51 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 int	main(int ac, char **av)
 {
 	t_data	*data;
-	int		status;
 
 	if (ac < 5 || ac > 6)
-		return ;
+		return (0);
 	data = new_data();
-	data->num_of_philo = ft_strtol(av[1]);
+	data->num_of_philo = (int)ft_strtol(av[1]);
 	data->time_to_die = ft_strtol(av[2]);
 	data->time_to_eat = ft_strtol(av[3]);
 	data->time_to_sleep = ft_strtol(av[4]);
