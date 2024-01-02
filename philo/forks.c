@@ -6,11 +6,13 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/01 20:51:31 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 01:40:25 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	try_take_fork(t_fork *fork);
 
 // success -> return (0);
 t_fork	*set_forks(int cnt)
@@ -28,20 +30,43 @@ t_fork	*set_forks(int cnt)
 	return (forks);
 }
 
-void	take_fork(t_fork *fork)
+void	take_fork(t_philo *philo)
 {
+	t_fork	*main_fork;
+	t_fork	*second_fork;
+
+	if (philo->x % 2 == 0)
+	{
+		main_fork = philo->left_fork;
+		second_fork = philo->right_fork;
+	}
+	else
+	{
+		main_fork = philo->right_fork;
+		second_fork = philo->left_fork;
+	}
 	while (1)
 	{
-		pthread_mutex_lock(&(fork->fork_mutex));
-		if (fork->is_taken)
+		if (try_take_fork(main_fork))
 		{
-			pthread_mutex_unlock(&(fork->fork_mutex));
-			continue ;
+			if (try_take_fork(second_fork))
+				return ;
+			release_fork(main_fork);
 		}
-		fork->is_taken = 1;
-		pthread_mutex_unlock(&(fork->fork_mutex));
-		return ;
 	}
+}
+
+static int	try_take_fork(t_fork *fork)
+{
+	pthread_mutex_lock(&(fork->fork_mutex));
+	if (fork->is_taken)
+	{
+		pthread_mutex_unlock(&(fork->fork_mutex));
+		return (0);
+	}
+	fork->is_taken = 1;
+	pthread_mutex_unlock(&(fork->fork_mutex));
+	return (1);
 }
 
 void	release_fork(t_fork *fork)

@@ -5,10 +5,10 @@ INCLUDE = .
 OBJ_DIR = obj
 
 SRC = \
+death_monitor.c full_monitor.c\
 forks.c \
 logger.c \
 main.c \
-death_monitor.c full_monitor.c\
 mutex.c \
 philo.c \
 simulator.c \

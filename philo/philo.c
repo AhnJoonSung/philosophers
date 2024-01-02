@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/01 21:54:35 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 01:46:24 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	*philo(void *arg)
 			return (0);
 		if (sleeping(philo, data) != 0)
 			return (0);
+		usleep(FT_WAIT_TIME);
 	}
 	return (0);
 }
@@ -58,21 +59,12 @@ static int	thinking(t_philo *philo, t_data *data)
 
 static int	taken(t_philo *philo, t_data *data)
 {
-	if (philo->x % 2 == 0)
-	{
-		take_fork(philo->right_fork);
-		take_fork(philo->left_fork);
-	}
-	else
-	{
-		take_fork(philo->left_fork);
-		take_fork(philo->right_fork);
-	}
+	take_fork(philo);
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
-		release_fork(philo->right_fork);
 		release_fork(philo->left_fork);
+		release_fork(philo->right_fork);
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
@@ -88,6 +80,8 @@ static int	eating(t_philo *philo, t_data *data)
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
+		release_fork(philo->left_fork);
+		release_fork(philo->right_fork);
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
@@ -100,7 +94,7 @@ static int	eating(t_philo *philo, t_data *data)
 	philo->remain_eating--;
 	pthread_mutex_unlock(philo->remain_mutex);
 	pthread_mutex_unlock(data->end_mutex);
-	usleep(data->time_to_eat * 1000);
+	usleep(data->time_to_eat * 1000 - FT_SWITCHING_TIME);
 	release_fork(philo->right_fork);
 	release_fork(philo->left_fork);
 	return (0);
@@ -116,6 +110,6 @@ static int	sleeping(t_philo *philo, t_data *data)
 	}
 	logger(get_time(data->start_tv), philo->x, SLEEPING, data);
 	pthread_mutex_unlock(data->end_mutex);
-	usleep(data->time_to_sleep * 1000);
+	usleep(data->time_to_sleep * 1000 - FT_SWITCHING_TIME);
 	return (0);
 }

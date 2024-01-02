@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/01 19:43:46 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 01:47:08 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,4 @@ long	get_utime(t_timeval start_tv)
 		usec = now_tv.tv_usec - start_tv.tv_usec;
 	}
 	return (sec * 1000000 + usec);
-}
-
-void	busy_waiting(useconds_t usec)
-{
-	t_timeval	start_tv;
-
-	gettimeofday(&start_tv, 0);
-	while ((useconds_t)get_utime(start_tv) < usec)
-		;
 }

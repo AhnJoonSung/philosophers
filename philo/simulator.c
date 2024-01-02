@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/01 19:59:26 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 01:45:55 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	simulator(t_data *data)
 		pthread_mutex_unlock(data->end_mutex);
 	}
 	pthread_mutex_unlock(data->end_mutex);
-	usleep(FT_WAITTIME);
+	usleep(FT_CLEANUP_TIME);
 	clear_simulator(data, forks, philos, 0);
 }
 

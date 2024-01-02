@@ -20,11 +20,13 @@
 # include <unistd.h>
 
 # define FT_INFINITE 9223372036854775807L
-# define FT_WAITTIME 500000
+# define FT_CLEANUP_TIME 500000
+# define FT_WAIT_TIME 2000
+# define FT_SWITCHING_TIME 2000
 
 typedef struct timeval	t_timeval;
 
-enum					e_status
+enum	e_status
 {
 	THINKING,
 	TAKEN,
@@ -41,62 +43,60 @@ typedef struct fork
 
 typedef struct data
 {
-	int					num_of_philo;
-	long				time_to_die;
-	long				time_to_eat;
-	long				time_to_sleep;
-	long				number_of_must_eat;
-	t_timeval			start_tv;
-	int					is_end;
-	pthread_mutex_t		*log_mutex;
-	pthread_mutex_t		*end_mutex;
-}						t_data;
+	int				num_of_philo;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			number_of_must_eat;
+	t_timeval		start_tv;
+	int				is_end;
+	pthread_mutex_t	*log_mutex;
+	pthread_mutex_t	*end_mutex;
+}					t_data;
 
 typedef struct philo
 {
-	int					x;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
-	long				last_eat;
-	long				remain_eating;
-	t_data				*data;
-	pthread_mutex_t		*last_eat_mutex;
-	pthread_mutex_t		*remain_mutex;
-}						t_philo;
+	int				x;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
+	long			last_eat;
+	long			remain_eating;
+	t_data			*data;
+	pthread_mutex_t	*last_eat_mutex;
+	pthread_mutex_t	*remain_mutex;
+}					t_philo;
 
-pthread_mutex_t			*new_mutex(void);
-void					del_mutex(pthread_mutex_t *mutex);
-t_data					*new_data(void);
-void					del_data(t_data *data);
-t_philo					*new_philo(void);
+pthread_mutex_t		*new_mutex(void);
+void				del_mutex(pthread_mutex_t *mutex);
+t_data				*new_data(void);
+void				del_data(t_data *data);
+t_philo				*new_philo(void);
 
-long					get_time(t_timeval start_tv);
-long					get_utime(t_timeval start_tv);
-void					busy_waiting(useconds_t usec);
-long					ft_strtol(const char *str);
+long				get_time(t_timeval start_tv);
+long				get_utime(t_timeval start_tv);
+long				ft_strtol(const char *str);
 
-t_fork					*set_forks(int cnt);
-void					take_fork(t_fork *fork);
-void					release_fork(t_fork *fork);
-void					clear_forks(t_fork *forks, int cnt);
-t_philo					**set_philos(t_data *data, t_fork *forks);
-void					clear_philos(t_philo **philos, int size);
+t_fork				*set_forks(int cnt);
+void				take_fork(t_philo *philo);
+void				release_fork(t_fork *fork);
+void				clear_forks(t_fork *forks, int cnt);
+t_philo				**set_philos(t_data *data, t_fork *forks);
+void				clear_philos(t_philo **philos, int size);
 
-void					create_detach_thread(pthread_t *thread,
-							void *(*f)(void *), void *arg);
+void				create_detach_thread(pthread_t *thread,
+						void *(*f)(void *), void *arg);
 
-void					logger(long time, int philo_num, int status,
-							t_data *data);
+void				logger(long time, int philo_num, int status,
+						t_data *data);
 
-void					simulator(t_data *data);
+void				simulator(t_data *data);
 
-void					*death_monitor(void *arg);
-void					*full_monitor(void *arg);
-void					*philo(void *arg);
+void				*death_monitor(void *arg);
+void				*full_monitor(void *arg);
+int					is_philo_full(t_philo *philo);;
+void				*philo(void *arg);
 
-int						is_philo_full(t_philo *philo);
-
-void					clear_simulator(t_data *data, t_fork *forks,
-							t_philo **philos, int status);
+void				clear_simulator(t_data *data, t_fork *forks,
+						t_philo **philos, int status);
 
 #endif
