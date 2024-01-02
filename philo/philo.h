@@ -20,8 +20,8 @@
 # include <unistd.h>
 
 # define FT_CLEANUP_TIME 500000
-# define FT_WAIT_TIME 2000
-# define FT_SWITCHING_TIME 5000
+# define FT_WAIT_TIME 50000
+# define FT_SWITCHING_TIME 6000
 
 typedef struct timeval	t_timeval;
 

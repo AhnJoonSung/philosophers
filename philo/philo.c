@@ -6,7 +6,7 @@
 /*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 05:56:20 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 06:12:15 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	*philo(void *arg)
 			return (0);
 		if (sleeping(philo, data) != 0)
 			return (0);
-		usleep(FT_WAIT_TIME);
+		if (data->num_of_philo % 2 == 1)
+			usleep(FT_WAIT_TIME);
 	}
 	return (0);
 }

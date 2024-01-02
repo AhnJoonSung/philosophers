@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 01:40:25 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 06:31:22 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,10 @@ void	take_fork(t_philo *philo)
 		main_fork = philo->right_fork;
 		second_fork = philo->left_fork;
 	}
-	while (1)
-	{
-		if (try_take_fork(main_fork))
-		{
-			if (try_take_fork(second_fork))
-				return ;
-			release_fork(main_fork);
-		}
-	}
+	while (try_take_fork(main_fork) == 0)
+		;
+	while (try_take_fork(second_fork) == 0)
+		;
 }
 
 static int	try_take_fork(t_fork *fork)
