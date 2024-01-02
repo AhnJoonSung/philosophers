@@ -6,7 +6,7 @@
 /*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:13:37 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 04:30:24 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 05:48:17 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int ac, char **av)
 
 	if (check_args(ac, av) != 0)
 	{
-		printf("not valid arguments\n");
+		printf("Invalid arguments.\n");
 		return (0);
 	}
 	data = new_data();

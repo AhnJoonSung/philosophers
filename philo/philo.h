@@ -19,7 +19,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-# define FT_INFINITE 9223372036854775807L
 # define FT_CLEANUP_TIME 500000
 # define FT_WAIT_TIME 2000
 # define FT_SWITCHING_TIME 2000

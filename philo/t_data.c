@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_data.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 17:58:48 by ahn               #+#    #+#             */
-/*   Updated: 2023/12/31 04:18:11 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 05:34:01 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_data	*new_data(void)
 	data->time_to_die = 0;
 	data->time_to_eat = 0;
 	data->time_to_sleep = 0;
-	data->number_of_must_eat = FT_INFINITE;
+	data->number_of_must_eat = -1;
 	data->is_end = 0;
 	data->end_mutex = new_mutex();
 	data->log_mutex = new_mutex();

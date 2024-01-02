@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 01:45:55 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 05:43:34 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static int	create_threads(t_data *data, t_philo **philos)
 	if (!threads)
 		return (1);
 	create_detach_thread(threads + n, death_monitor, philos);
-	create_detach_thread(threads + n + 1, full_monitor, philos);
+	if (data->number_of_must_eat != -1)
+		create_detach_thread(threads + n + 1, full_monitor, philos);
 	i = -1;
 	while (++i < n)
 		create_detach_thread(threads + i, philo, philos[i]);

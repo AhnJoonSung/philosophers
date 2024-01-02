@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   full_monitor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 06:14:47 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 01:50:46 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 05:47:21 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ void	*full_monitor(void *arg)
 	philos = (t_philo **)arg;
 	data = (*philos)->data;
 	while (1)
+	{
 		if (full_monitoring(data, philos) != 0)
+		{
+			pthread_mutex_unlock(data->end_mutex);
 			return (0);
+		}
+	}
 }
 
 static int	full_monitoring(t_data *data, t_philo **philos)
@@ -37,16 +42,13 @@ static int	full_monitoring(t_data *data, t_philo **philos)
 	{
 		pthread_mutex_lock(data->end_mutex);
 		if (data->is_end)
-		{
-			pthread_mutex_unlock(data->end_mutex);
 			return (1);
-		}
 		if (is_philo_full(philos[i++]))
 		{
 			if (++full_cnt == data->num_of_philo)
 			{
 				data->is_end = 1;
-				pthread_mutex_unlock(data->end_mutex);
+				printf("All the philosophers have finished eating.\n");
 				return (1);
 			}
 		}
@@ -61,7 +63,7 @@ int	is_philo_full(t_philo *philo)
 
 	is_full = 0;
 	pthread_mutex_lock(philo->remain_mutex);
-	if (philo->remain_eating < 1)
+	if (philo->remain_eating == 0)
 		is_full = 1;
 	pthread_mutex_unlock(philo->remain_mutex);
 	return (is_full);
