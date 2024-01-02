@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 01:46:24 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 05:05:19 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	eating(t_philo *philo, t_data *data)
 	philo->remain_eating--;
 	pthread_mutex_unlock(philo->remain_mutex);
 	pthread_mutex_unlock(data->end_mutex);
-	usleep(data->time_to_eat * 1000 - FT_SWITCHING_TIME);
+	ft_usleep(data->time_to_eat * 1000);
 	release_fork(philo->right_fork);
 	release_fork(philo->left_fork);
 	return (0);
@@ -110,6 +110,6 @@ static int	sleeping(t_philo *philo, t_data *data)
 	}
 	logger(get_time(data->start_tv), philo->x, SLEEPING, data);
 	pthread_mutex_unlock(data->end_mutex);
-	usleep(data->time_to_sleep * 1000 - FT_SWITCHING_TIME);
+	ft_usleep(data->time_to_sleep * 1000);
 	return (0);
 }

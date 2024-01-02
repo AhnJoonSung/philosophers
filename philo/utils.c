@@ -6,14 +6,12 @@
 /*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 22:39:41 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 19:45:17 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 04:32:08 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	ft_isspace(int c);
-static int	ft_isdigit(int c);
 static long	get_num(const char *str, int neg);
 
 void	create_detach_thread(pthread_t *thread, void *(*f)(void *), void *arg)
@@ -22,13 +20,24 @@ void	create_detach_thread(pthread_t *thread, void *(*f)(void *), void *arg)
 	pthread_detach(*thread);
 }
 
+int	is_natural_num(char *str)
+{
+	if (*str == '+')
+		str++;
+	while (*str)
+	{
+		if (*str < '0' || '9' < *str)
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 long	ft_strtol(const char *str)
 {
 	int	neg;
 
 	neg = 0;
-	while (ft_isspace(*str))
-		str++;
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
@@ -50,7 +59,7 @@ static long	get_num(const char *str, int neg)
 	num = 0;
 	cutoff = long_max / 10;
 	cutlim = long_max % 10 + '0';
-	while (ft_isdigit(*str))
+	while (*str)
 	{
 		if ((num > cutoff) || (num == cutoff && *str > cutlim))
 		{
@@ -64,18 +73,4 @@ static long	get_num(const char *str, int neg)
 	if (neg)
 		return (-num);
 	return (num);
-}
-
-static int	ft_isspace(int c)
-{
-	if (c == ' ' || ('\t' <= c && c <= '\r'))
-		return (1);
-	return (0);
-}
-
-static int	ft_isdigit(int c)
-{
-	if ('0' <= c && c <= '9')
-		return (1);
-	return (0);
 }

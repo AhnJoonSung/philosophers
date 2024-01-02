@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   timer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 01:47:08 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/03 05:04:39 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,12 @@ long	get_utime(t_timeval start_tv)
 		usec = now_tv.tv_usec - start_tv.tv_usec;
 	}
 	return (sec * 1000000 + usec);
+}
+
+void	ft_usleep(useconds_t usec)
+{
+	if (usec < FT_SWITCHING_TIME)
+		usleep(0);
+	else
+		usleep(usec - FT_SWITCHING_TIME);
 }
