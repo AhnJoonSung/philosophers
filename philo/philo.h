@@ -69,14 +69,11 @@ int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
 void					create_detach_thread(pthread_t *thread,
 							void *(*f)(void *), void *arg);
-void					spend_time(t_data *data, long start, int status);
 long					get_time(void);
 long					get_utime(void);
-void					set_timer(void);
-t_timeval				*get_starttv(void);
+void					spend_time(t_data *data, long start, int status);
 
-void					logger(long time, int philo_num, int status,
-							t_data *data);
+void					logger(int philo_num, int status, t_data *data);
 
 pthread_mutex_t			*new_mutex(void);
 void					del_mutex(pthread_mutex_t *mutex);

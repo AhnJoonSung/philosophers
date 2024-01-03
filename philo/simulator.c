@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 19:22:15 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/04 03:53:26 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	set_simulator(t_data *data, t_fork **forks, t_philo ***philos)
 		clear_forks(*forks, data->num_of_philo);
 		return (1);
 	}
-	set_timer();
 	return (0);
 }
 
@@ -78,8 +77,6 @@ void	clear_simulator(t_data *data, t_fork *forks, t_philo **philos,
 	{
 		clear_forks(forks, data->num_of_philo);
 		clear_philos(philos, data->num_of_philo);
-		del_data(data);
 	}
-	else if (status == 1)
-		del_data(data);
+	del_data(data);
 }

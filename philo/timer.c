@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 22:05:02 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/04 04:02:19 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,19 @@ long	get_time(void)
 // return micro seconds
 long	get_utime(void)
 {
-	t_timeval	start_tv;
-	t_timeval	now_tv;
-	long		sec;
-	int			usec;
-	const int	max_usec = 1000000;
+	static long			start_time;
+	static t_timeval	start;
+	t_timeval			now;
+	long				now_time;
 
-	gettimeofday(&now_tv, 0);
-	start_tv = *get_starttv();
-	if (now_tv.tv_usec < start_tv.tv_usec)
+	if (start_time == 0)
 	{
-		sec = (now_tv.tv_sec - start_tv.tv_sec) - 1;
-		usec = (max_usec - start_tv.tv_usec) + now_tv.tv_usec;
+		gettimeofday(&start, 0);
+		start_time = start.tv_sec * 1000000 + start.tv_usec;
 	}
-	else
-	{
-		sec = now_tv.tv_sec - start_tv.tv_sec;
-		usec = now_tv.tv_usec - start_tv.tv_usec;
-	}
-	return (sec * 1000000 + usec);
+	gettimeofday(&now, 0);
+	now_time = now.tv_sec * 1000000 + now.tv_usec - start_time;
+	return (now_time);
 }
 
 // micro seconds
@@ -63,16 +57,4 @@ void	spend_time(t_data *data, long start, int status)
 		until = 0;
 	while (get_utime() + FT_ATOMIC_TIME / 2 < until)
 		usleep(FT_ATOMIC_TIME);
-}
-
-void	set_timer(void)
-{
-	gettimeofday(get_starttv(), 0);
-}
-
-t_timeval	*get_starttv(void)
-{
-	static t_timeval	tv;
-
-	return (&tv);
 }
