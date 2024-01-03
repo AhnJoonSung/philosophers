@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   t_philo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/31 18:39:36 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 21:35:52 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	del_philo(t_philo *philo);
+static void	set_philo_forks(t_philo *philo, t_fork *forks);
 
 t_philo	*new_philo(void)
 {
@@ -21,6 +22,7 @@ t_philo	*new_philo(void)
 	philo = (t_philo *)malloc(sizeof(t_philo));
 	if (!philo)
 		return (0);
+	philo->last_eat = 0;
 	philo->last_eat_mutex = new_mutex();
 	philo->remain_mutex = new_mutex();
 	return (philo);
@@ -44,14 +46,31 @@ t_philo	**set_philos(t_data *data, t_fork *forks)
 			return (0);
 		}
 		philos[i]->x = i;
-		philos[i]->left_fork = forks + i;
-		philos[i]->right_fork = forks + ((i + 1) % data->num_of_philo);
-		philos[i]->last_eat = 0;
 		philos[i]->remain_eating = data->number_of_must_eat;
 		philos[i]->data = data;
+		set_philo_forks(philos[i], forks);
 		i++;
 	}
 	return (philos);
+}
+
+static void	set_philo_forks(t_philo *philo, t_fork *forks)
+{
+	int	i;
+	int	num_of_philo;
+
+	i = philo->x;
+	num_of_philo = philo->data->num_of_philo;
+	if (philo->x % 2 == 0)
+	{
+		philo->main_fork = forks + i;
+		philo->second_fork = forks + ((i + 1) % num_of_philo);
+	}
+	else
+	{
+		philo->main_fork = forks + ((i + 1) % num_of_philo);
+		philo->second_fork = forks + i;
+	}
 }
 
 void	clear_philos(t_philo **philos, int size)

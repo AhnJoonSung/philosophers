@@ -3,30 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   timer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 05:04:39 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 22:05:02 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // return milli seconds
-long	get_time(t_timeval start_tv)
+long	get_time(void)
 {
-	return (get_utime(start_tv) / 1000);
+	return (get_utime() / 1000);
 }
 
 // return micro seconds
-long	get_utime(t_timeval start_tv)
+long	get_utime(void)
 {
+	t_timeval	start_tv;
 	t_timeval	now_tv;
 	long		sec;
 	int			usec;
 	const int	max_usec = 1000000;
 
 	gettimeofday(&now_tv, 0);
+	start_tv = *get_starttv();
 	if (now_tv.tv_usec < start_tv.tv_usec)
 	{
 		sec = (now_tv.tv_sec - start_tv.tv_sec) - 1;
@@ -40,10 +42,37 @@ long	get_utime(t_timeval start_tv)
 	return (sec * 1000000 + usec);
 }
 
-void	ft_usleep(useconds_t usec)
+// micro seconds
+void	spend_time(t_data *data, long start, int status)
 {
-	if (usec < FT_SWITCHING_TIME)
-		usleep(0);
+	long	until;
+	long	gap_time;
+
+	if (status == EATING)
+		until = (start + data->time_to_eat) * 1000;
+	else if (status == SLEEPING)
+		until = (start + data->time_to_sleep) * 1000;
+	else if (status == WAIT)
+	{
+		if (data->time_to_eat < data->time_to_sleep)
+			return ;
+		gap_time = data->time_to_eat - data->time_to_sleep;
+		until = (start + gap_time) * 1000 + FT_WAIT_TIME;
+	}
 	else
-		usleep(usec - FT_SWITCHING_TIME);
+		until = 0;
+	while (get_utime() + FT_ATOMIC_TIME / 2 < until)
+		usleep(FT_ATOMIC_TIME);
+}
+
+void	set_timer(void)
+{
+	gettimeofday(get_starttv(), 0);
+}
+
+t_timeval	*get_starttv(void)
+{
+	static t_timeval	tv;
+
+	return (&tv);
 }

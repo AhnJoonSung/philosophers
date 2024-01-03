@@ -42,7 +42,7 @@ static int	death_monitoring(t_data *data, t_philo **philos)
 		}
 		if (is_philo_died(philos, i, data))
 		{
-			logger(get_time(data->start_tv), philos[i]->x, DIED, data);
+			logger(get_time(), philos[i]->x, DIED, data);
 			data->is_end = 1;
 			pthread_mutex_unlock(data->end_mutex);
 			return (1);
@@ -56,7 +56,7 @@ static int	death_monitoring(t_data *data, t_philo **philos)
 static int	is_philo_died(t_philo **philos, int i, t_data *data)
 {
 	pthread_mutex_lock(philos[i]->last_eat_mutex);
-	if (get_time(data->start_tv) - philos[i]->last_eat > data->time_to_die)
+	if (get_time() - philos[i]->last_eat > data->time_to_die)
 	{
 		pthread_mutex_unlock(philos[i]->last_eat_mutex);
 		return (1);

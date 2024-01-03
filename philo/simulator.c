@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulator.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 06:28:48 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 19:22:15 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static int	set_simulator(t_data *data, t_fork **forks, t_philo ***philos)
 	*forks = set_forks(data->num_of_philo);
 	if (!*forks)
 		return (1);
-	gettimeofday(&(data->start_tv), 0);
 	*philos = set_philos(data, *forks);
 	if (!*philos)
 	{
 		clear_forks(*forks, data->num_of_philo);
 		return (1);
 	}
+	set_timer();
 	return (0);
 }
 

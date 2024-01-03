@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 06:12:15 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/03 21:11:56 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*philo(void *arg)
 		if (sleeping(philo, data) != 0)
 			return (0);
 		if (data->num_of_philo % 2 == 1)
-			usleep(FT_WAIT_TIME);
+			spend_time(data, get_time(), WAIT);
 	}
 	return (0);
 }
@@ -48,7 +48,7 @@ static int	thinking(t_philo *philo, t_data *data)
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
-	logger(get_time(data->start_tv), philo->x, THINKING, data);
+	logger(get_time(), philo->x, THINKING, data);
 	if (is_philo_full(philo))
 	{
 		pthread_mutex_unlock(data->end_mutex);
@@ -60,58 +60,57 @@ static int	thinking(t_philo *philo, t_data *data)
 
 static int	taken(t_philo *philo, t_data *data)
 {
-	take_fork(philo);
+	take_forks(philo);
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
-		release_fork(philo->left_fork);
-		release_fork(philo->right_fork);
+		release_forks(philo);
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
-	logger(get_time(data->start_tv), philo->x, TAKEN, data);
 	pthread_mutex_unlock(data->end_mutex);
 	return (0);
 }
 
 static int	eating(t_philo *philo, t_data *data)
 {
-	long	eat_time;
+	long	now_time;
 
+	now_time = get_time();
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
-		release_fork(philo->left_fork);
-		release_fork(philo->right_fork);
+		release_forks(philo);
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
-	eat_time = get_time(data->start_tv);
 	pthread_mutex_lock(philo->last_eat_mutex);
-	philo->last_eat = eat_time;
+	philo->last_eat = now_time;
 	pthread_mutex_unlock(philo->last_eat_mutex);
 	pthread_mutex_lock(philo->remain_mutex);
 	if (philo->remain_eating > 0)
 		philo->remain_eating--;
 	pthread_mutex_unlock(philo->remain_mutex);
-	logger(eat_time, philo->x, EATING, data);
+	logger(now_time, philo->x, EATING, data);
 	pthread_mutex_unlock(data->end_mutex);
-	ft_usleep(data->time_to_eat * 1000);
-	release_fork(philo->right_fork);
-	release_fork(philo->left_fork);
+	spend_time(data, now_time, EATING);
+	release_forks(philo);
 	return (0);
 }
 
 static int	sleeping(t_philo *philo, t_data *data)
 {
+	long	now_time;
+
+	now_time = get_time();
 	pthread_mutex_lock(data->end_mutex);
 	if (data->is_end)
 	{
 		pthread_mutex_unlock(data->end_mutex);
 		return (1);
 	}
-	logger(get_time(data->start_tv), philo->x, SLEEPING, data);
+	logger(now_time, philo->x, SLEEPING, data);
 	pthread_mutex_unlock(data->end_mutex);
-	ft_usleep(data->time_to_sleep * 1000);
+	spend_time(data, now_time, SLEEPING);
 	return (0);
 }

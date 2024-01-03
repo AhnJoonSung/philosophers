@@ -20,8 +20,8 @@
 # include <unistd.h>
 
 # define FT_CLEANUP_TIME 500000
-# define FT_WAIT_TIME 50000
-# define FT_SWITCHING_TIME 6000
+# define FT_WAIT_TIME 1000
+# define FT_ATOMIC_TIME 10
 
 typedef struct timeval	t_timeval;
 
@@ -31,34 +31,33 @@ enum					e_status
 	TAKEN,
 	EATING,
 	SLEEPING,
-	DIED
+	DIED,
+	WAIT
 };
 
-typedef struct fork
+typedef struct s_fork
 {
 	int					is_taken;
 	pthread_mutex_t		fork_mutex;
 }						t_fork;
 
-typedef struct data
+typedef struct s_data
 {
 	int					num_of_philo;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
 	long				number_of_must_eat;
-	long				cnt;
-	t_timeval			start_tv;
 	int					is_end;
 	pthread_mutex_t		*log_mutex;
 	pthread_mutex_t		*end_mutex;
 }						t_data;
 
-typedef struct philo
+typedef struct s_philo
 {
 	int					x;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
+	t_fork				*main_fork;
+	t_fork				*second_fork;
 	long				last_eat;
 	long				remain_eating;
 	t_data				*data;
@@ -70,22 +69,24 @@ int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
 void					create_detach_thread(pthread_t *thread,
 							void *(*f)(void *), void *arg);
-void					ft_usleep(useconds_t usec);
-long					get_time(t_timeval start_tv);
-long					get_utime(t_timeval start_tv);
+void					spend_time(t_data *data, long start, int status);
+long					get_time(void);
+long					get_utime(void);
+void					set_timer(void);
+t_timeval				*get_starttv(void);
 
 void					logger(long time, int philo_num, int status,
 							t_data *data);
 
-pthread_mutex_t 		*new_mutex(void);
+pthread_mutex_t			*new_mutex(void);
 void					del_mutex(pthread_mutex_t *mutex);
 t_data					*new_data(void);
 void					del_data(t_data *data);
 t_philo					*new_philo(void);
 
 t_fork					*set_forks(int cnt);
-void					take_fork(t_philo *philo);
-void					release_fork(t_fork *fork);
+void					take_forks(t_philo *philo);
+void					release_forks(t_philo *philo);
 void					clear_forks(t_fork *forks, int cnt);
 t_philo					**set_philos(t_data *data, t_fork *forks);
 void					clear_philos(t_philo **philos, int size);
