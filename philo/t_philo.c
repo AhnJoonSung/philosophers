@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 21:35:52 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 00:05:46 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,18 @@ static void	set_philo_forks(t_philo *philo, t_fork *forks)
 
 	i = philo->x;
 	num_of_philo = philo->data->num_of_philo;
-	if (philo->x % 2 == 0)
-	{
-		philo->main_fork = forks + i;
-		philo->second_fork = forks + ((i + 1) % num_of_philo);
-	}
-	else
-	{
-		philo->main_fork = forks + ((i + 1) % num_of_philo);
-		philo->second_fork = forks + i;
-	}
+	philo->main_fork = forks + i;
+	philo->second_fork = forks + ((i + 1) % num_of_philo);
+	// if (philo->x % 2 == 0)
+	// {
+	// 	philo->main_fork = forks + i;
+	// 	philo->second_fork = forks + ((i + 1) % num_of_philo);
+	// }
+	// else
+	// {
+	// 	philo->main_fork = forks + ((i + 1) % num_of_philo);
+	// 	philo->second_fork = forks + i;
+	// }
 }
 
 void	clear_philos(t_philo **philos, int size)

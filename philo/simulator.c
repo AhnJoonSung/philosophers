@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/04 03:53:26 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/04 23:22:42 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ void	simulator(t_data *data)
 		return (clear_simulator(data, forks, philos, 0));
 	while (1)
 	{
-		pthread_mutex_lock(data->end_mutex);
-		if (data->is_end)
+		if (get_isend(data))
 			break ;
-		pthread_mutex_unlock(data->end_mutex);
+		usleep(FT_ATOMIC_TIME);
 	}
-	pthread_mutex_unlock(data->end_mutex);
 	usleep(FT_CLEANUP_TIME);
 	clear_simulator(data, forks, philos, 0);
 }

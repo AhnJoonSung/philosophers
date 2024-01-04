@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   full_monitor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 06:14:47 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/03 05:47:21 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/04 22:59:11 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ void	*full_monitor(void *arg)
 	data = (*philos)->data;
 	while (1)
 	{
-		if (full_monitoring(data, philos) != 0)
-		{
-			pthread_mutex_unlock(data->end_mutex);
+		if (get_isend(data))
 			return (0);
-		}
+		if (full_monitoring(data, philos) != 0)
+			return (0);
 	}
 }
 
@@ -40,19 +39,16 @@ static int	full_monitoring(t_data *data, t_philo **philos)
 	full_cnt = 0;
 	while (i < data->num_of_philo)
 	{
-		pthread_mutex_lock(data->end_mutex);
-		if (data->is_end)
-			return (1);
 		if (is_philo_full(philos[i++]))
 		{
 			if (++full_cnt == data->num_of_philo)
 			{
+				pthread_mutex_lock(data->end_mutex);
 				data->is_end = 1;
-				printf("All the philosophers have finished eating.\n");
+				pthread_mutex_unlock(data->end_mutex);
 				return (1);
 			}
 		}
-		pthread_mutex_unlock(data->end_mutex);
 	}
 	return (0);
 }

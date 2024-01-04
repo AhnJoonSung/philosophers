@@ -23,8 +23,12 @@ void	*death_monitor(void *arg)
 	philos = (t_philo **)arg;
 	data = (*philos)->data;
 	while (1)
+	{
+		if (get_isend(data))
+			return (0);
 		if (death_monitoring(data, philos) != 0)
 			return (0);
+	}
 }
 
 static int	death_monitoring(t_data *data, t_philo **philos)
@@ -34,20 +38,14 @@ static int	death_monitoring(t_data *data, t_philo **philos)
 	i = 0;
 	while (i < data->num_of_philo)
 	{
-		pthread_mutex_lock(data->end_mutex);
-		if (data->is_end)
-		{
-			pthread_mutex_unlock(data->end_mutex);
-			return (1);
-		}
 		if (is_philo_died(philos, i, data))
 		{
 			logger(philos[i]->x, DIED, data);
+			pthread_mutex_lock(data->end_mutex);
 			data->is_end = 1;
 			pthread_mutex_unlock(data->end_mutex);
 			return (1);
 		}
-		pthread_mutex_unlock(data->end_mutex);
 		i++;
 	}
 	return (0);

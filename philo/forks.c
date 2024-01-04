@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/04 04:08:37 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 00:56:20 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,13 @@ void	take_forks(t_philo *philo)
 			pthread_mutex_unlock(&(philo->second_fork->fork_mutex));
 		}
 		pthread_mutex_unlock(&(philo->main_fork->fork_mutex));
-		usleep(FT_ATOMIC_TIME);
 	}
 	philo->main_fork->is_taken = 1;
 	philo->second_fork->is_taken = 1;
 	pthread_mutex_unlock(&(philo->second_fork->fork_mutex));
 	pthread_mutex_unlock(&(philo->main_fork->fork_mutex));
-	pthread_mutex_lock(philo->data->end_mutex);
-	if (philo->data->is_end != 1)
-	{
-		logger(philo->x, TAKEN, philo->data);
-		logger(philo->x, TAKEN, philo->data);
-	}
-	pthread_mutex_unlock(philo->data->end_mutex);
+	logger(philo->x, TAKEN, philo->data);
+	logger(philo->x, TAKEN, philo->data);
 }
 
 void	release_forks(t_philo *philo)

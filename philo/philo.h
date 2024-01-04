@@ -21,7 +21,7 @@
 
 # define FT_CLEANUP_TIME 500000
 # define FT_WAIT_TIME 1000
-# define FT_ATOMIC_TIME 10
+# define FT_ATOMIC_TIME 100
 
 typedef struct timeval	t_timeval;
 
@@ -66,12 +66,12 @@ typedef struct s_philo
 }						t_philo;
 
 int						is_natural_num(char *str);
+int						get_isend(t_data *data);
 long					ft_strtol(const char *str);
 void					create_detach_thread(pthread_t *thread,
 							void *(*f)(void *), void *arg);
 long					get_time(void);
-long					get_utime(void);
-void					spend_time(t_data *data, long start, int status);
+void					spend_time(t_data *data, int status);
 
 void					logger(int philo_num, int status, t_data *data);
 
