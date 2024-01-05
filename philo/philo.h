@@ -23,8 +23,7 @@
 # define FT_FAIL 0
 # define FT_TRUE 1
 # define FT_FALSE 0
-# define FT_CLEANUP_TIME 500000
-# define FT_ATOMIC_TIME 1000
+# define FT_ATOMIC_TIME 200
 
 typedef struct timeval	t_timeval;
 typedef int				t_bool;
@@ -73,7 +72,9 @@ t_bool					get_end(t_data *data);
 void					set_end(t_data *data);
 int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
+void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
 long					get_time(void);
+long					get_utime(void);
 t_bool					is_philo_died(t_philo *philo);
 void					spend_time(t_philo *philo, long start, int status);
 
@@ -87,7 +88,7 @@ t_philo					*new_philo(void);
 
 t_fork					*set_forks(int cnt);
 t_bool					take_forks(t_philo *philo);
-void					release_forks(t_philo *philo);
+void					release_fork(t_fork *fork);
 void					clear_forks(t_fork *forks, int cnt);
 t_philo					**set_philos(t_data *data, t_fork *forks);
 void					clear_philos(t_philo **philos, int size);

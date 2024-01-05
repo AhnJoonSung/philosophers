@@ -6,32 +6,29 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 22:39:41 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 16:20:45 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 22:21:05 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_fork	*set_forks(int cnt)
+void	create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos)
 {
-	t_fork	*forks;
+	int	i;
 
-	forks = (t_fork *)malloc(sizeof(t_fork) * cnt);
-	if (!forks)
-		return (0);
-	while (cnt-- > 0)
+	i = 0;
+	while (i < data->num_of_philo)
 	{
-		forks[cnt].is_taken = 0;
-		pthread_mutex_init(&(forks[cnt].mutex), 0);
+		pthread_create(threads + i, 0, philo, philos[i]);
+		i += 2;
 	}
-	return (forks);
-}
-
-void	clear_forks(t_fork *forks, int cnt)
-{
-	while (cnt-- > 0)
-		pthread_mutex_destroy(&(forks[cnt].mutex));
-	free(forks);
+	usleep(1000);
+	i = 1;
+	while (i < data->num_of_philo)
+	{
+		pthread_create(threads + i, 0, philo, philos[i]);
+		i += 2;
+	}
 }
 
 t_bool	is_philo_died(t_philo *philo)
