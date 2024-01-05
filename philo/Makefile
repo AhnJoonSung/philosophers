@@ -5,7 +5,7 @@ INCLUDE = .
 OBJ_DIR = obj
 
 SRC = \
-death_monitor.c full_monitor.c\
+end.c\
 forks.c \
 logger.c \
 main.c \

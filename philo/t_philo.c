@@ -6,13 +6,12 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 00:05:46 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:55:42 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	del_philo(t_philo *philo);
 static void	set_philo_forks(t_philo *philo, t_fork *forks);
 
 t_philo	*new_philo(void)
@@ -23,8 +22,7 @@ t_philo	*new_philo(void)
 	if (!philo)
 		return (0);
 	philo->last_eat = 0;
-	philo->last_eat_mutex = new_mutex();
-	philo->remain_mutex = new_mutex();
+	philo->eat_cnt = 0;
 	return (philo);
 }
 
@@ -45,8 +43,7 @@ t_philo	**set_philos(t_data *data, t_fork *forks)
 			clear_philos(philos, i - 1);
 			return (0);
 		}
-		philos[i]->x = i;
-		philos[i]->remain_eating = data->number_of_must_eat;
+		philos[i]->x = i + 1;
 		philos[i]->data = data;
 		set_philo_forks(philos[i], forks);
 		i++;
@@ -56,23 +53,19 @@ t_philo	**set_philos(t_data *data, t_fork *forks)
 
 static void	set_philo_forks(t_philo *philo, t_fork *forks)
 {
-	int	i;
-	int	num_of_philo;
+	int	n;
 
-	i = philo->x;
-	num_of_philo = philo->data->num_of_philo;
-	philo->main_fork = forks + i;
-	philo->second_fork = forks + ((i + 1) % num_of_philo);
-	// if (philo->x % 2 == 0)
-	// {
-	// 	philo->main_fork = forks + i;
-	// 	philo->second_fork = forks + ((i + 1) % num_of_philo);
-	// }
-	// else
-	// {
-	// 	philo->main_fork = forks + ((i + 1) % num_of_philo);
-	// 	philo->second_fork = forks + i;
-	// }
+	n = philo->data->num_of_philo;
+	if (philo->x % 2 == 1)
+	{
+		philo->main_fork = forks + (philo->x - 1);
+		philo->second_fork = forks + (philo->x % n);
+	}
+	else
+	{
+		philo->main_fork = forks + (philo->x % n);
+		philo->second_fork = forks + (philo->x - 1);
+	}
 }
 
 void	clear_philos(t_philo **philos, int size)
@@ -83,15 +76,8 @@ void	clear_philos(t_philo **philos, int size)
 	while (i < size)
 	{
 		if (philos[i])
-			del_philo(philos[i]);
+			free(philos[i]);
 		i++;
 	}
 	free(philos);
-}
-
-static void	del_philo(t_philo *philo)
-{
-	del_mutex(philo->last_eat_mutex);
-	del_mutex(philo->remain_mutex);
-	free(philo);
 }

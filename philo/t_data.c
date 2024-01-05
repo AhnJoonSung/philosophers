@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_data.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 17:58:48 by ahn               #+#    #+#             */
-/*   Updated: 2024/01/03 05:34:01 by ahn              ###   ########.fr       */
+/*   Updated: 2024/01/05 01:14:36 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ t_data	*new_data(void)
 	data->time_to_eat = 0;
 	data->time_to_sleep = 0;
 	data->number_of_must_eat = -1;
-	data->is_end = 0;
+	data->number_of_full = 0;
+	data->is_end = FT_FALSE;
 	data->end_mutex = new_mutex();
 	data->log_mutex = new_mutex();
+	data->full_mutex = new_mutex();
 	return (data);
 }
 
@@ -35,5 +37,6 @@ void	del_data(t_data *data)
 {
 	del_mutex(data->end_mutex);
 	del_mutex(data->log_mutex);
+	del_mutex(data->full_mutex);
 	free(data);
 }
