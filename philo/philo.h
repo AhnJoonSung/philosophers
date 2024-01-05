@@ -75,6 +75,7 @@ int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
 long					get_time(void);
 t_bool					is_philo_died(t_philo *philo);
+void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
 void					spend_time(t_philo *philo, long start, int status);
 
 int						logger(t_philo *philo, int status);
@@ -87,7 +88,7 @@ t_philo					*new_philo(void);
 
 t_fork					*set_forks(int cnt);
 t_bool					take_forks(t_philo *philo);
-void					release_forks(t_philo *philo);
+void					release_fork(t_fork *fork);
 void					clear_forks(t_fork *forks, int cnt);
 t_philo					**set_philos(t_data *data, t_fork *forks);
 void					clear_philos(t_philo **philos, int size);

@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 21:27:08 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 22:31:44 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	eating(t_philo *philo)
 	pthread_mutex_unlock(philo->mutex);
 	if (logger(philo, EATING) == FT_FAIL)
 	{
-		release_forks(philo);
+		release_fork(philo->main_fork);
+		release_fork(philo->second_fork);
 		return (FT_FAIL);
 	}
 	spend_time(philo, now_time, EATING);
@@ -77,7 +78,8 @@ static int	eating(t_philo *philo)
 			set_end(data);
 		pthread_mutex_unlock(data->full_mutex);
 	}
-	release_forks(philo);
+	release_fork(philo->main_fork);
+	release_fork(philo->second_fork);
 	return (FT_SUCCESS);
 }
 
