@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 22:39:41 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 16:20:45 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 17:30:11 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ t_bool	is_philo_died(t_philo *philo)
 {
 	long	hungry_time;
 
+	pthread_mutex_lock(philo->mutex);
 	hungry_time = get_time() - philo->last_eat;
+	pthread_mutex_unlock(philo->mutex);
 	if (hungry_time > philo->data->time_to_die)
 	{
 		pthread_mutex_lock(philo->data->end_mutex);

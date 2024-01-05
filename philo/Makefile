@@ -8,6 +8,7 @@ SRC = \
 end.c\
 forks.c \
 logger.c \
+monitor.c \
 main.c \
 mutex.c \
 philo.c \

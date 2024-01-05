@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 16:36:27 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:23:52 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,10 @@ static t_bool	take_fork(t_philo *philo, t_fork *fork)
 		pthread_mutex_lock(&(fork->mutex));
 		if (fork->is_taken == FT_FALSE)
 		{
-			if (logger(philo, TAKEN) == FT_FAIL)
-			{
-				pthread_mutex_unlock(&(fork->mutex));
-				return (FT_FAIL);
-			}
 			fork->is_taken = FT_TRUE;
 			pthread_mutex_unlock(&(fork->mutex));
+			if (logger(philo, TAKEN) == FT_FAIL)
+				return (FT_FAIL);
 			return (FT_TRUE);
 		}
 		pthread_mutex_unlock(&(fork->mutex));

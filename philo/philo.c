@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 16:49:54 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:27:08 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	*philo(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (philo->x % 2 == 1)
-		spend_time(philo, 0, EATING);
 	while (1)
 	{
 		if (thinking(philo) == FT_FAIL)
@@ -63,7 +61,9 @@ static int	eating(t_philo *philo)
 
 	now_time = get_time();
 	data = philo->data;
+	pthread_mutex_lock(philo->mutex);
 	philo->last_eat = now_time;
+	pthread_mutex_unlock(philo->mutex);
 	if (logger(philo, EATING) == FT_FAIL)
 	{
 		release_forks(philo);
@@ -83,8 +83,11 @@ static int	eating(t_philo *philo)
 
 static int	sleeping(t_philo *philo)
 {
+	long	now;
+
+	now = get_time();
 	if (logger(philo, SLEEPING) == FT_FAIL)
 		return (FT_FAIL);
-	spend_time(philo, get_time(), SLEEPING);
+	spend_time(philo, now, SLEEPING);
 	return (FT_SUCCESS);
 }

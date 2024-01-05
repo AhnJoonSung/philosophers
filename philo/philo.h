@@ -23,8 +23,7 @@
 # define FT_FAIL 0
 # define FT_TRUE 1
 # define FT_FALSE 0
-# define FT_CLEANUP_TIME 500000
-# define FT_ATOMIC_TIME 1000
+# define FT_ATOMIC_TIME 200
 
 typedef struct timeval	t_timeval;
 typedef int				t_bool;
@@ -67,6 +66,7 @@ typedef struct s_philo
 	long				last_eat;
 	long				eat_cnt;
 	t_data				*data;
+	pthread_mutex_t		*mutex;
 }						t_philo;
 
 t_bool					get_end(t_data *data);
@@ -94,6 +94,7 @@ void					clear_philos(t_philo **philos, int size);
 
 void					simulator(t_data *data);
 void					*philo(void *arg);
+void					*monitoring(void *arg);
 
 void					clear_simulator(t_data *data, t_fork *forks,
 							t_philo **philos, int status);

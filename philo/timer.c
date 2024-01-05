@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 17:13:00 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/05 20:58:52 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,6 @@ void	spend_time(t_philo *philo, long start, int status)
 		gap_time = data->time_to_eat - data->time_to_sleep;
 		until = start + gap_time + 2;
 	}
-	while (get_time() <= until)
-	{
-		if (is_philo_died(philo))
-			return ;
+	while (get_time() < until)
 		usleep(FT_ATOMIC_TIME);
-	}
 }
