@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 22:31:44 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/08 21:44:11 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	sleeping(t_philo *philo);
 
 void	*philo(void *arg)
 {
-	t_philo		*philo;
-	t_data		*data;
+	t_philo	*philo;
+	t_data	*data;
 
 	philo = (t_philo *)arg;
 	data = philo->data;
@@ -35,7 +35,7 @@ void	*philo(void *arg)
 		if (sleeping(philo) == FT_FAIL)
 			return (0);
 		if (data->num_of_philo % 2 == 1)
-			spend_time(philo, get_time(), WAIT);
+			spend_time(data, get_time(), WAIT);
 	}
 	return (0);
 }
@@ -70,7 +70,7 @@ static int	eating(t_philo *philo)
 		release_fork(philo->second_fork);
 		return (FT_FAIL);
 	}
-	spend_time(philo, now_time, EATING);
+	spend_time(data, now_time, EATING);
 	if (++philo->eat_cnt == data->number_of_must_eat)
 	{
 		pthread_mutex_lock(data->full_mutex);
@@ -85,11 +85,11 @@ static int	eating(t_philo *philo)
 
 static int	sleeping(t_philo *philo)
 {
-	long	now;
+	long	now_time;
 
-	now = get_time();
+	now_time = get_time();
 	if (logger(philo, SLEEPING) == FT_FAIL)
 		return (FT_FAIL);
-	spend_time(philo, now, SLEEPING);
+	spend_time(philo->data, now_time, SLEEPING);
 	return (FT_SUCCESS);
 }

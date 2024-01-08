@@ -35,7 +35,8 @@ enum					e_status
 	EATING,
 	SLEEPING,
 	DIED,
-	WAIT
+	WAIT,
+	MONITORING
 };
 
 typedef struct s_fork
@@ -74,9 +75,8 @@ void					set_end(t_data *data);
 int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
 long					get_time(void);
-t_bool					is_philo_died(t_philo *philo);
 void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
-void					spend_time(t_philo *philo, long start, int status);
+void					spend_time(t_data *data, long start, int status);
 
 int						logger(t_philo *philo, int status);
 

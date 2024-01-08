@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahn <ahn@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 22:29:39 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/08 21:28:50 by ahn              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static t_bool	take_fork(t_philo *philo, t_fork *fork)
 {
 	while (1)
 	{
-		if (is_philo_died(philo))
-			return (FT_FAIL);
 		pthread_mutex_lock(&(fork->mutex));
 		if (fork->is_taken == FT_FALSE)
 		{
