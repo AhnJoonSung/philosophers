@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:17:52 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 22:31:44 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:02:44 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	thinking(t_philo *philo);
 static int	taken(t_philo *philo);
-static int	eating(t_philo *philo);
+static int	eating(t_philo *philo, t_data *data);
 static int	sleeping(t_philo *philo);
 
 void	*philo(void *arg)
@@ -30,47 +30,45 @@ void	*philo(void *arg)
 			return (0);
 		if (taken(philo) == FT_FAIL)
 			return (0);
-		if (eating(philo) == FT_FAIL)
+		if (eating(philo, data) == FT_FAIL)
 			return (0);
 		if (sleeping(philo) == FT_FAIL)
 			return (0);
 		if (data->num_of_philo % 2 == 1)
-			spend_time(philo, get_time(), WAIT);
+			spend_time(data, get_time(), WAIT);
 	}
 	return (0);
 }
 
 static int	thinking(t_philo *philo)
 {
-	if (logger(philo, THINKING) == FT_FAIL)
+	if (safety_logger(philo, get_time(), THINKING) != FT_SUCCESS)
 		return (FT_FAIL);
 	return (FT_SUCCESS);
 }
 
 static int	taken(t_philo *philo)
 {
-	if (take_forks(philo) == FT_FAIL)
+	if (take_forks(philo) != FT_SUCCESS)
 		return (FT_FAIL);
 	return (FT_SUCCESS);
 }
 
-static int	eating(t_philo *philo)
+static int	eating(t_philo *philo, t_data *data)
 {
-	long	now_time;
-	t_data	*data;
+	long	start_time;
 
-	now_time = get_time();
-	data = philo->data;
+	start_time = get_time();
 	pthread_mutex_lock(philo->mutex);
-	philo->last_eat = now_time;
+	philo->last_eat = start_time;
 	pthread_mutex_unlock(philo->mutex);
-	if (logger(philo, EATING) == FT_FAIL)
+	if (safety_logger(philo, start_time, EATING) == FT_FAIL)
 	{
 		release_fork(philo->main_fork);
 		release_fork(philo->second_fork);
 		return (FT_FAIL);
 	}
-	spend_time(philo, now_time, EATING);
+	spend_time(data, start_time, EATING);
 	if (++philo->eat_cnt == data->number_of_must_eat)
 	{
 		pthread_mutex_lock(data->full_mutex);
@@ -85,11 +83,11 @@ static int	eating(t_philo *philo)
 
 static int	sleeping(t_philo *philo)
 {
-	long	now;
+	long	start_time;
 
-	now = get_time();
-	if (logger(philo, SLEEPING) == FT_FAIL)
+	start_time = get_time();
+	if (safety_logger(philo, start_time, SLEEPING) == FT_FAIL)
 		return (FT_FAIL);
-	spend_time(philo, now, SLEEPING);
+	spend_time(philo->data, start_time, SLEEPING);
 	return (FT_SUCCESS);
 }

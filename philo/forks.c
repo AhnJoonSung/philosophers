@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 22:40:56 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 22:29:39 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 17:53:10 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static t_bool	take_fork(t_philo *philo, t_fork *fork);
 // 성공시 SUCCESS, 실패시 FAIL 반환
 t_bool	take_forks(t_philo *philo)
 {
-	if (take_fork(philo, philo->main_fork) == FT_FAIL)
+	if (take_fork(philo, philo->main_fork) != FT_SUCCESS)
 		return (FT_FAIL);
-	if (take_fork(philo, philo->second_fork) == FT_FAIL)
+	if (take_fork(philo, philo->second_fork) != FT_SUCCESS)
 	{
 		release_fork(philo->main_fork);
 		return (FT_FAIL);
@@ -31,18 +31,17 @@ static t_bool	take_fork(t_philo *philo, t_fork *fork)
 {
 	while (1)
 	{
-		if (is_philo_died(philo))
-			return (FT_FAIL);
 		pthread_mutex_lock(&(fork->mutex));
 		if (fork->is_taken == FT_FALSE)
 		{
 			fork->is_taken = FT_TRUE;
 			pthread_mutex_unlock(&(fork->mutex));
-			if (logger(philo, TAKEN) == FT_FAIL)
+			if (safety_logger(philo, get_time(), TAKEN) != FT_SUCCESS)
 				return (FT_FAIL);
-			return (FT_TRUE);
+			return (FT_SUCCESS);
 		}
 		pthread_mutex_unlock(&(fork->mutex));
+		usleep(200);
 	}
 }
 

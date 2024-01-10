@@ -23,7 +23,6 @@
 # define FT_FAIL 0
 # define FT_TRUE 1
 # define FT_FALSE 0
-# define FT_ATOMIC_TIME 200
 
 typedef struct timeval	t_timeval;
 typedef int				t_bool;
@@ -35,7 +34,8 @@ enum					e_status
 	EATING,
 	SLEEPING,
 	DIED,
-	WAIT
+	WAIT,
+	MONITORING
 };
 
 typedef struct s_fork
@@ -76,9 +76,10 @@ long					ft_strtol(const char *str);
 long					get_time(void);
 t_bool					is_philo_died(t_philo *philo);
 void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
-void					spend_time(t_philo *philo, long start, int status);
+void					spend_time(t_data *data, long start, int status);
 
-int						logger(t_philo *philo, int status);
+void					logger(t_philo *philo, long time, int status);
+int						safety_logger(t_philo *philo, long time, int status);
 
 pthread_mutex_t			*new_mutex(void);
 void					del_mutex(pthread_mutex_t *mutex);

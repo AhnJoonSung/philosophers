@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 20:58:52 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 17:59:09 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,20 @@ long	get_time(void)
 	return (now_time - start_time);
 }
 
-void	spend_time(t_philo *philo, long start, int status)
+void	spend_time(t_data *data, long start, int status)
 {
-	t_data	*data;
 	long	until;
-	long	gap_time;
 
-	data = philo->data;
-	until = 0;
 	if (status == EATING)
 		until = (start + data->time_to_eat);
 	else if (status == SLEEPING)
 		until = (start + data->time_to_sleep);
 	else if (status == WAIT)
-	{
-		if (data->time_to_eat < data->time_to_sleep)
-			return ;
-		gap_time = data->time_to_eat - data->time_to_sleep;
-		until = start + gap_time + 2;
-	}
+		until = start + data->time_to_eat - data->time_to_sleep + 2;
+	else if (status == MONITORING)
+		until = start + 5;
+	else
+		until = 0;
 	while (get_time() < until)
-		usleep(FT_ATOMIC_TIME);
+		usleep(400);
 }
