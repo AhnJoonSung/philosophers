@@ -1,5 +1,5 @@
 CC = cc
-LFLAGS =
+LFLAGS = -g3 -fsanitize=thread
 CFLAGS = -Wall -Wextra -Werror -MMD -MP
 INCLUDE = .
 OBJ_DIR = obj

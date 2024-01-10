@@ -6,13 +6,14 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 22:39:41 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 17:18:46 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 23:01:12 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos)
+void	create_philo_threads(t_data *data, pthread_t *threads,
+							void *(*philo)(void *), t_philo **philos)
 {
 	int	i;
 
@@ -46,6 +47,7 @@ t_bool	is_philo_died(t_philo *philo)
 	return (FT_FALSE);
 }
 
+// 0을 포함하는 자연수인지
 int	is_natural_num(char *str)
 {
 	if (*str == '+')

@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 18:37:54 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 19:12:05 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	spend_time(t_data *data, long start, int status)
 		until = (start + data->time_to_sleep);
 	else if (status == WAIT)
 		until = start + data->time_to_eat - data->time_to_sleep + 2;
-	else if (status == MONITORING)
-		until = start + 5;
 	else
 		until = 0;
 	while (get_time() < until)

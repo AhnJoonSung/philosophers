@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 18:38:04 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 23:41:55 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ void	simulator(t_data *data)
 	t_philo		**philos;
 	pthread_t	*philo_threads;
 	pthread_t	monitor_thread;
-	int			i;
+	int			n;
 
 	if (set_simulator(data, &forks, &philos) != 0)
 		return (clear_simulator(data, forks, philos, 1));
 	pthread_create(&monitor_thread, 0, monitoring, philos);
 	pthread_detach(monitor_thread);
-	philo_threads = (pthread_t *)malloc(sizeof(pthread_t) * (data->num_of_philo));
+	n = data->num_of_philo;
+	philo_threads = (pthread_t *)malloc(sizeof(pthread_t) * n);
 	if (!philo_threads)
 		return (clear_simulator(data, forks, philos, 0));
 	create_philo_threads(data, philo_threads, philo, philos);
-	i = -1;
-	while (++i < data->num_of_philo)
-		pthread_join(philo_threads[i], 0);
+	while (n -- > 0)
+		pthread_join(philo_threads[n], 0);
 	free(philo_threads);
 	clear_simulator(data, forks, philos, 0);
 }

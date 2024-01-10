@@ -6,13 +6,14 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 18:46:13 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 22:58:19 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	set_philo_forks(t_philo *philo, t_fork *forks);
+static void	del_philo(t_philo *philo);
 
 t_philo	*new_philo(void)
 {
@@ -77,11 +78,14 @@ void	clear_philos(t_philo **philos, int size)
 	while (i < size)
 	{
 		if (philos[i])
-		{
-			del_mutex(philos[i]->mutex);
-			free(philos[i]);
-		}
+			del_philo(philos[i]);
 		i++;
 	}
 	free(philos);
+}
+
+static void	del_philo(t_philo *philo)
+{
+	del_mutex(philo->mutex);
+	free(philo);
 }

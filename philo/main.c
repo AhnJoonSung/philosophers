@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:13:37 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 18:42:39 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 23:14:07 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 static int	check_args(int ac, char **av);
 
-void test(void)
-{
-	system("leaks philo");
-}
-
 int	main(int ac, char **av)
 {
 	t_data	*data;
 
-	atexit(test);
 	if (check_args(ac, av) != 0)
 	{
 		printf("Invalid arguments.\n");
@@ -44,17 +38,12 @@ static int	check_args(int ac, char **av)
 {
 	if (ac < 5 || 6 < ac)
 		return (1);
-	if (!is_natural_num(av[1]) || ft_strtol(av[1]) == 0)
+	if (!is_natural_num(av[1]) || !is_natural_num(av[2])
+		|| !is_natural_num(av[3]) || !is_natural_num(av[4]))
 		return (1);
-	if (!is_natural_num(av[2]))
+	if (ft_strtol(av[1]) == 0 || ft_strtol(av[3]) == 0 || ft_strtol(av[4]) == 0)
 		return (1);
-	if (!is_natural_num(av[3]))
-		return (1);
-	if (!is_natural_num(av[4]))
-		return (1);
-	if (ft_strtol(av[3]) == 0 || ft_strtol(av[4]) == 0)
-		return (1);
-	if (ac == 6 && !is_natural_num(av[5]))
+	if (ac == 6 && (!is_natural_num(av[5]) || ft_strtol(av[5]) == 0))
 		return (1);
 	return (0);
 }

@@ -35,7 +35,6 @@ enum					e_status
 	SLEEPING,
 	DIED,
 	WAIT,
-	MONITORING
 };
 
 typedef struct s_fork
@@ -76,7 +75,8 @@ long					ft_strtol(const char *str);
 long					get_time(void);
 void					set_timer(void);
 t_bool					is_philo_died(t_philo *philo);
-void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
+void					create_philo_threads(t_data *data, pthread_t *threads,
+							void *(*philo)(void *), t_philo **philos);
 void					spend_time(t_data *data, long start, int status);
 
 void					logger(t_philo *philo, long time, int status);
@@ -89,9 +89,9 @@ void					del_data(t_data *data);
 t_philo					*new_philo(void);
 
 t_fork					*set_forks(int cnt);
+void					clear_forks(t_fork *forks, int cnt);
 t_bool					take_forks(t_philo *philo);
 void					release_fork(t_fork *fork);
-void					clear_forks(t_fork *forks, int cnt);
 t_philo					**set_philos(t_data *data, t_fork *forks);
 void					clear_philos(t_philo **philos, int size);
 
