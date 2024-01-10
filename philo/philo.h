@@ -74,6 +74,7 @@ void					set_end(t_data *data);
 int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
 long					get_time(void);
+void					set_timer(void);
 t_bool					is_philo_died(t_philo *philo);
 void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
 void					spend_time(t_data *data, long start, int status);

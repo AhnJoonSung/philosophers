@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:32:43 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 22:32:20 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:38:04 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	set_simulator(t_data *data, t_fork **forks, t_philo ***philos)
 		clear_forks(*forks, data->num_of_philo);
 		return (1);
 	}
+	set_timer();
 	return (0);
 }
 

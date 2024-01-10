@@ -6,7 +6,7 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:13:37 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 18:04:28 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:42:39 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 
 static int	check_args(int ac, char **av);
 
+void test(void)
+{
+	system("leaks philo");
+}
+
 int	main(int ac, char **av)
 {
 	t_data	*data;
 
+	atexit(test);
 	if (check_args(ac, av) != 0)
 	{
 		printf("Invalid arguments.\n");

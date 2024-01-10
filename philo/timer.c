@@ -6,28 +6,39 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 15:32:10 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/10 17:59:09 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:37:54 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static t_timeval	*get_tv(void);
+
 // return milli seconds
 long	get_time(void)
 {
-	static long			start_time;
-	static t_timeval	start;
+	t_timeval			start;
+	long				start_time;
 	t_timeval			now;
 	long				now_time;
 
-	if (start_time == 0)
-	{
-		gettimeofday(&start, 0);
-		start_time = start.tv_sec * 1000 + start.tv_usec / 1000;
-	}
 	gettimeofday(&now, 0);
+	start = *(get_tv());
+	start_time = start.tv_sec * 1000 + start.tv_usec / 1000;
 	now_time = now.tv_sec * 1000 + now.tv_usec / 1000;
 	return (now_time - start_time);
+}
+
+void	set_timer(void)
+{
+	gettimeofday(get_tv(), 0);
+}
+
+static t_timeval	*get_tv(void)
+{
+	static t_timeval	tv;
+
+	return (&tv);
 }
 
 void	spend_time(t_data *data, long start, int status)
