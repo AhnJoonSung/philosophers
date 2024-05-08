@@ -6,13 +6,12 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 17:58:48 by ahn               #+#    #+#             */
-/*   Updated: 2024/01/05 01:14:36 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/15 15:37:10 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// return : malloc fail 시 NULL 반환
 t_data	*new_data(void)
 {
 	t_data	*data;

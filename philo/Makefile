@@ -1,38 +1,30 @@
 CC = cc
-LFLAGS =
-CFLAGS = -Wall -Wextra -Werror -MMD -MP
-INCLUDE = .
-OBJ_DIR = obj
-
-SRC = \
-end.c\
-forks.c \
-logger.c \
-main.c \
-mutex.c \
-philo.c \
-simulator.c \
-t_data.c t_philo.c \
-timer.c \
-utils.c
-
-OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
-DEP = $(OBJ:%.o=%.d)
+CFLAGS = -Wall -Wextra -Werror -MMD
 
 NAME = philo
 
+SRCS_DIR = srcs
+OBJS_DIR = objs
+INCLUDES = -I./includes
+
+SRCS := $(shell find $(SRCS_DIR) -type f -name '*.c')
+OBJS := $(patsubst $(SRCS_DIR)/%.c,$(OBJS_DIR)/%.o,$(SRCS))
+DEP := $(OBJS:%.o=%.d)
+
+#-----------------------------------rules--------------------------------------#
 all : $(NAME)
 
-$(NAME) : $(OBJ)
-	$(CC) $(LFLAGS) $^ -o $@
+$(NAME) : $(OBJS)
+	$(CC) $^ -o $@
 
-$(OBJ_DIR)/%.o : %.c
-	$(CC) $(LFLAGS) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c
+	@mkdir -p $(@D);
+	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
 
 -include $(DEP)
 
 clean :
-	rm -f $(OBJ) $(DEP)
+	rm -f $(OBJS) $(DEP)
 
 fclean : clean
 	rm -f $(NAME)

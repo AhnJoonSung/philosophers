@@ -6,13 +6,14 @@
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 23:02:51 by jooahn            #+#    #+#             */
-/*   Updated: 2024/01/05 15:55:42 by jooahn           ###   ########.fr       */
+/*   Updated: 2024/01/10 22:58:19 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	set_philo_forks(t_philo *philo, t_fork *forks);
+static void	del_philo(t_philo *philo);
 
 t_philo	*new_philo(void)
 {
@@ -23,6 +24,7 @@ t_philo	*new_philo(void)
 		return (0);
 	philo->last_eat = 0;
 	philo->eat_cnt = 0;
+	philo->mutex = new_mutex();
 	return (philo);
 }
 
@@ -56,7 +58,7 @@ static void	set_philo_forks(t_philo *philo, t_fork *forks)
 	int	n;
 
 	n = philo->data->num_of_philo;
-	if (philo->x % 2 == 1)
+	if (philo->x % 2 == 0)
 	{
 		philo->main_fork = forks + (philo->x - 1);
 		philo->second_fork = forks + (philo->x % n);
@@ -76,8 +78,14 @@ void	clear_philos(t_philo **philos, int size)
 	while (i < size)
 	{
 		if (philos[i])
-			free(philos[i]);
+			del_philo(philos[i]);
 		i++;
 	}
 	free(philos);
+}
+
+static void	del_philo(t_philo *philo)
+{
+	del_mutex(philo->mutex);
+	free(philo);
 }

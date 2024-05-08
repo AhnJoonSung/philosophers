@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                     :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jooahn <jooahn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 00:15:21 by jooahn            #+#    #+#             */
-/*   Updated: 2023/12/18 23:59:09 by jooahn           ###   ########.fr       */
+/*   Created: 2024/01/15 15:37:30 by jooahn            #+#    #+#             */
+/*   Updated: 2024/01/15 15:37:32 by jooahn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define FT_FAIL 0
 # define FT_TRUE 1
 # define FT_FALSE 0
-# define FT_ATOMIC_TIME 200
 
 typedef struct timeval	t_timeval;
 typedef int				t_bool;
@@ -35,7 +34,7 @@ enum					e_status
 	EATING,
 	SLEEPING,
 	DIED,
-	WAIT
+	WAIT,
 };
 
 typedef struct s_fork
@@ -66,37 +65,40 @@ typedef struct s_philo
 	long				last_eat;
 	long				eat_cnt;
 	t_data				*data;
+	pthread_mutex_t		*mutex;
 }						t_philo;
 
 t_bool					get_end(t_data *data);
 void					set_end(t_data *data);
+
 int						is_natural_num(char *str);
 long					ft_strtol(const char *str);
-void					create_philo_threads(t_data *data, pthread_t *threads, void *(*philo)(void *), t_philo **philos);
-long					get_time(void);
-long					get_utime(void);
-t_bool					is_philo_died(t_philo *philo);
-void					spend_time(t_philo *philo, long start, int status);
 
-int						logger(t_philo *philo, int status);
+long					get_time(void);
+void					set_timer(void);
+void					spend_time(t_data *data, long start, int status);
+
+t_fork					*set_forks(int cnt);
+void					clear_forks(t_fork *forks, int cnt);
+t_philo					**set_philos(t_data *data, t_fork *forks);
+void					clear_philos(t_philo **philos, int size);
+void					create_philo_threads(t_data *data, pthread_t *threads,
+							void *(*philo)(void *), t_philo **philos);
+
+void					logger(t_philo *philo, long time, int status);
+int						safety_logger(t_philo *philo, long time, int status);
+
+t_bool					take_forks(t_philo *philo);
+void					release_forks(t_philo *philo);
+
+void					simulator(t_data *data);
+void					*philo(void *arg);
+void					*monitoring(void *arg);
 
 pthread_mutex_t			*new_mutex(void);
 void					del_mutex(pthread_mutex_t *mutex);
 t_data					*new_data(void);
 void					del_data(t_data *data);
 t_philo					*new_philo(void);
-
-t_fork					*set_forks(int cnt);
-t_bool					take_forks(t_philo *philo);
-void					release_fork(t_fork *fork);
-void					clear_forks(t_fork *forks, int cnt);
-t_philo					**set_philos(t_data *data, t_fork *forks);
-void					clear_philos(t_philo **philos, int size);
-
-void					simulator(t_data *data);
-void					*philo(void *arg);
-
-void					clear_simulator(t_data *data, t_fork *forks,
-							t_philo **philos, int status);
 
 #endif
